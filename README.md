@@ -1,28 +1,71 @@
-# Cow wisdom web server
+# Wisecow
+
+**Wisecow** is a fun, lightweight web server that serves random "wisdom" messages using `fortune` and `cowsay`. It’s built with a simple Bash script and designed for learning CI/CD and Kubernetes deployment workflows.
+
+---
+
+## Features
+
+- Serves random wisdom messages in a cute ASCII cow format.  
+- Easy to deploy locally or in a Kubernetes cluster.  
+- CI/CD ready with GitHub Actions workflow.  
+- Lightweight and minimal dependencies: Bash, `nc`, `fortune`, and `cowsay`.
+
+---
 
 ## Prerequisites
 
-```
-sudo apt install fortune-mod cowsay -y
-```
+Before running locally:
 
-## How to use?
+```bash
+sudo apt update
+sudo apt install fortune cowsay netcat -y
 
-1. Run `./wisecow.sh`
-2. Point the browser to server port (default 4499)
+#Running Locally
+git clone https://github.com/<your-username>/cicd_github-action.git
+cd cicd_github-action
+chmod +x app.sh
+./app.sh
 
-## What to expect?
-![wisecow](https://github.com/nyrahul/wisecow/assets/9133227/8d6bfde3-4a5a-480e-8d55-3fef60300d98)
+The server will run on port 4499 by default.
+Open your browser and visit: http://localhost:4499
 
-# Problem Statement
-Deploy the wisecow application as a k8s app
 
-## Requirement
-1. Create Dockerfile for the image and corresponding k8s manifest to deploy in k8s env. The wisecow service should be exposed as k8s service.
-2. Github action for creating new image when changes are made to this repo
-3. [Challenge goal]: Enable secure TLS communication for the wisecow app.
+Kubernetes Deployment
 
-## Expected Artifacts
-1. Github repo containing the app with corresponding dockerfile, k8s manifest, any other artifacts needed.
-2. Github repo with corresponding github action.
-3. Github repo should be kept private and the access should be enabled for following github IDs: nyrahul
+Build Docker image:
+docker build -t <your-dockerhub-username>/wisecow:v1 .
+docker push <your-dockerhub-username>/wisecow:v1
+
+Apply Kubernetes manifests:
+kubectl apply -f k8s/
+
+
+CI/CD
+
+GitHub Actions workflow (.github/workflows/ci-cd.yml) automatically builds and pushes Docker images on commits.
+
+Kubernetes manifests are automatically applied on the cluster when changes are pushed.
+
+Directory Structure
+.
+├── app.sh               # Main Bash application
+├── Dockerfile           # Dockerfile for container image
+├── k8s/                 # Kubernetes manifests
+│   ├── deployment.yaml
+│   ├── service.yaml
+│   └── ingress.yaml
+├── .github/
+│   └── workflows/
+│       └── ci-cd.yml    # CI/CD GitHub Actions workflow
+└── README.md
+
+
+
+Notes
+
+Do not commit any secrets (keys, certificates) to the repository.
+
+Use .gitignore to prevent sensitive files from being added.
+
+Fun project intended for learning and experimentation.
