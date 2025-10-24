@@ -20,34 +20,58 @@ Before running locally:
 ```bash
 sudo apt update
 sudo apt install fortune cowsay netcat -y
+````
 
-#Running Locally
+---
+
+## Running Locally
+
+```bash
 git clone https://github.com/<your-username>/cicd_github-action.git
 cd cicd_github-action
 chmod +x app.sh
 ./app.sh
+```
 
-The server will run on port 4499 by default.
-Open your browser and visit: http://localhost:4499
+* The server will run on **port 4499** by default.
+* Open your browser and visit: `http://localhost:4499`
 
+---
 
-Kubernetes Deployment
+## Kubernetes Deployment
 
-Build Docker image:
+1. Build Docker image:
+
+```bash
 docker build -t <your-dockerhub-username>/wisecow:v1 .
 docker push <your-dockerhub-username>/wisecow:v1
+```
 
-Apply Kubernetes manifests:
+2. Apply Kubernetes manifests:
+
+```bash
 kubectl apply -f k8s/
+```
 
+3. Check pods and services:
 
-CI/CD
+```bash
+kubectl get pods
+kubectl get svc
+```
 
-GitHub Actions workflow (.github/workflows/ci-cd.yml) automatically builds and pushes Docker images on commits.
+---
 
-Kubernetes manifests are automatically applied on the cluster when changes are pushed.
+## CI/CD
 
-Directory Structure
+* GitHub Actions workflow (`.github/workflows/ci-cd.yml`) automatically builds and pushes Docker images on commits.
+* Kubernetes manifests are automatically applied on the cluster when changes are pushed.
+
+---
+
+## Directory Structure
+
+```
 .
 ├── app.sh               # Main Bash application
 ├── Dockerfile           # Dockerfile for container image
@@ -59,13 +83,18 @@ Directory Structure
 │   └── workflows/
 │       └── ci-cd.yml    # CI/CD GitHub Actions workflow
 └── README.md
+```
 
+---
 
+## Notes
 
-Notes
+* Do **not** commit any secrets (keys, certificates) to the repository.
+* Use `.gitignore` to prevent sensitive files from being added.
+* Fun project intended for learning and experimentation.
 
-Do not commit any secrets (keys, certificates) to the repository.
+---
 
-Use .gitignore to prevent sensitive files from being added.
+## Author
 
-Fun project intended for learning and experimentation.
+Saad Patel
